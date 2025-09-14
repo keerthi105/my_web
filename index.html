@@ -735,42 +735,73 @@
         .notification.show {
             transform: translateX(0);
         }
+/* Responsive Navigation */
+.menu-toggle {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #333;
+}
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
+/* Mobile styles */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
 
-            .hero h1 {
-                font-size: 2.5rem;
-            }
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 200px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        padding: 1rem;
+    }
 
-            .hero p {
-                font-size: 1.1rem;
-            }
+    .nav-menu.show {
+        display: flex;
+    }
 
-            .logo-container {
-                width: 60px;
-                height: 60px;
-            }
+    .nav-menu a {
+        color: #2E7D32;
+        padding: 0.8rem;
+        text-align: center;
+    }
 
-            .cart-summary {
-                margin: 2rem auto;
-                max-width: 300px;
-            }
+    .hero h1 {
+        font-size: 2.5rem;
+    }
 
-            .modal-content {
-                width: 95%;
-                padding: 1.5rem;
-            }
+    .hero p {
+        font-size: 1.1rem;
+    }
 
-            .delivery-slots,
-            .subscription-options {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    .logo-container {
+        width: 60px;
+        height: 60px;
+    }
+
+    .cart-summary {
+        margin: 2rem auto;
+        max-width: 300px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .delivery-slots,
+    .subscription-options {
+        grid-template-columns: 1fr;
+    }
+}
+
+          </style>
 </head>
 <body>
     <!-- Background Container -->
@@ -778,25 +809,32 @@
 
     <!-- Header -->
     <header class="header">
-        <nav class="nav-container">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <div class="logo-container">
-                    <div class="logo-content" id="logoContent"><img src="images/logo.png" class="logo-container" alt="Farm2Fridge Logo">
-</div>
-                </div>
-                <h2 style="color: #2E7D32; font-size: 1.8rem; font-weight: bold; margin: 0;">Farm2Fridge</h2>
+<nav class="nav-container">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+        <div class="logo-container">
+            <div class="logo-content" id="logoContent">
+                <img src="images/logo.png" alt="Farm2Fridge Logo">
             </div>
-            <ul class="nav-menu">
-                <li><a href="#home" onclick="showHomePage()" class="active">Home</a></li>
-                <li><a href="#products" onclick="showProductsPage()">Products</a></li>
-                <li><a href="#cart" onclick="showCartPage()">Cart</a></li>
-                <li><a href="#about" onclick="showAboutSection()">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#login" onclick="showLoginModal()" id="loginNavBtn">Login</a></li>
-                <li><a href="#profile" onclick="showUserProfile()" id="userNavBtn" style="display: none;">Welcome, User</a></li>
-            </ul>
-        </nav>
-    </header>
+        </div>
+        <h2 style="color: #2E7D32; font-size: 1.8rem; font-weight: bold; margin: 0;">Farm2Fridge</h2>
+    </div>
+
+    <!-- Hamburger toggle -->
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+    <!-- Navigation Menu -->
+    <ul class="nav-menu" id="navMenu">
+        <li><a href="#home" onclick="showHomePage()" class="active">Home</a></li>
+        <li><a href="#products" onclick="showProductsPage()">Products</a></li>
+        <li><a href="#cart" onclick="showCartPage()">Cart</a></li>
+        <li><a href="#about" onclick="showAboutSection()">About</a></li>
+        <li><a href="#contact" onclick="showContactSection()">Contact</a></li>
+        <li><a href="#login" onclick="showLoginModal()" id="loginNavBtn">Login</a></li>
+        <li><a href="#profile" onclick="showUserProfile()" id="userNavBtn" style="display: none;">Welcome, User</a></li>
+    </ul>
+</nav>
+
+            </header>
 
     <!-- Home Page -->
     <div id="homePage" class="page active">
@@ -1680,5 +1718,9 @@
             });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97e9cd6982773a3c',t:'MTc1Nzc4OTEzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97e9cd6982773a3c',t:'MTc1Nzc4OTEzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();function toggleMenu() {
+    document.getElementById("navMenu").classList.toggle("show");
+}
+</script></body>
 </html>
+
