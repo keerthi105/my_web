@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm2Fridge - Fresh from Farm to Your Table</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background container with image and blur */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url('images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(3px);
+            transition: all 0.8s ease-in-out;
+        }
+
+        .background-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(200, 230, 201, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        /* Circular Logo Container */
+        .logo-container {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-content {
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        /* Page Container */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 2rem;
+        }
+
+        /* About Section */
+        .about {
+            padding: 4rem 2rem;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Products Page */
+        .products-header {
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .products-header h1 {
+            font-size: 3rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .products-header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .products-section {
+            padding: 2rem;
+        }
+
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+            border-radius: 15px;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card h3 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-price {
+            color: #4CAF50;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .add-to-cart-btn {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+
+
+        /* Cart Summary */
+        .cart-summary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 600px;
+            display: none;
+        }
+
+        .cart-summary.show {
+            display: block;
+        }
+
+        .cart-summary h3 {
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .cart-item {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .cart-total {
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .checkout-btn {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer Info Section */
+        .footer-info {
+            padding: 4rem 2rem;
+        }
+
+        .footer-info-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-info-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .footer-info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .footer-info-card h3 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-info-card p,
+        .footer-info-card a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+            display: block;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-info-card a:hover {
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(200, 230, 201, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(76, 175, 80, 0.2);
+            color: #666;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.1);
+        }
+
+        /* Bottom Cart Bar */
+        .cart-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-bottom.show {
+            display: flex;
+        }
+
+        .cart-info {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .cart-info span {
+            color: white;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        #bottom-cart-total {
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .go-to-cart {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .go-to-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .modal-header h3 {
+            color: #2E7D32;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff0000;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2E7D32;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .delivery-slots,
+        .subscription-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .slot-btn,
+        .subscription-btn {
+            padding: 0.8rem;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .slot-btn:hover,
+        .subscription-btn:hover {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .slot-btn.active,
+        .subscription-btn.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 3000;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .logo-container {
+                width: 60px;
+                height: 60px;
+            }
+
+            .cart-summary {
+                margin: 2rem auto;
+                max-width: 300px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .delivery-slots,
+            .subscription-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Container -->
+    <div class="background-container" id="backgroundContainer"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="logo-container">
+                    <div class="logo-content" id="logoContent"><img src="images/logo.png" class="logo-container" alt="Farm2Fridge Logo">
+</div>
+                </div>
+                <h2 style="color: #2E7D32; font-size: 1.8rem; font-weight: bold; margin: 0;">Farm2Fridge</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" onclick="showHomePage()" class="active">Home</a></li>
+                <li><a href="#products" onclick="showProductsPage()">Products</a></li>
+                <li><a href="#cart" onclick="showCartPage()">Cart</a></li>
+                <li><a href="#about" onclick="showAboutSection()">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#login" onclick="showLoginModal()" id="loginNavBtn">Login</a></li>
+                <li><a href="#profile" onclick="showUserProfile()" id="userNavBtn" style="display: none;">Welcome, User</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Home Page -->
+    <div id="homePage" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Farm2Fridge</h1>
+                <p>Fresh, organic produce delivered straight from local farms to your doorstep. Experience the taste of nature's finest harvest.</p>
+                <a href="#products" class="cta-button" onclick="showProductsPage()">Shop Fresh Now</a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="features-container">
+                <h2>Why Choose Farm2Fridge?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🚚</div>
+                        <h3>Fast Delivery</h3>
+                        <p>Same-day delivery from farm to your fridge. Fresh produce within hours of harvest.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌿</div>
+                        <h3>100% Organic</h3>
+                        <p>Certified organic produce grown without harmful pesticides or chemicals.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👨‍🌾</div>
+                        <h3>Local Farmers</h3>
+                        <p>Supporting local farming communities and sustainable agriculture practices.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about" id="about">
+            <div class="features-container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">About Farm2Fridge</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; align-items: center;">
+                    <div>
+                        <h3 style="color: white; margin-bottom: 1rem; font-size: 1.8rem; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Our Mission</h3>
+                        <p style="margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.8; color: rgba(255, 255, 255, 0.9); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">We bridge the gap between local farms and urban families, ensuring fresh, quality dairy products reach your doorstep while supporting local farmers and sustainable agriculture.</p>
+                        
+                        <h3 style="color: white; margin-bottom: 1rem; font-size: 1.8rem; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Why Choose Us?</h3>
+                        <div style="display: grid; gap: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span style="font-size: 2rem;">🌱</span>
+                                <div>
+                                    <strong style="color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Farm Fresh Quality</strong>
+                                    <p style="margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Direct from local farms, ensuring maximum freshness and nutrition</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span style="font-size: 2rem;">🚚</span>
+                                <div>
+                                    <strong style="color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Reliable Delivery</strong>
+                                    <p style="margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Timely delivery with flexible scheduling options</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span style="font-size: 2rem;">💯</span>
+                                <div>
+                                    <strong style="color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Quality Assured</strong>
+                                    <p style="margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Rigorous quality checks and hygienic packaging</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span style="font-size: 2rem;">🤝</span>
+                                <div>
+                                    <strong style="color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Supporting Farmers</strong>
+                                    <p style="margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Fair prices for farmers, sustainable agriculture practices</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 3rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                            <div style="font-size: 8rem; margin-bottom: 1rem;">🏡</div>
+                            <h3 style="color: white; margin-bottom: 1rem; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">From Farm to Your Table</h3>
+                            <p style="color: rgba(255, 255, 255, 0.9); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">We work directly with local dairy farmers to bring you the freshest milk and dairy products, supporting both your health and the local farming community.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="features-container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Contact Us</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem;">
+                    <div>
+                        <h3 style="color: white; margin-bottom: 2rem; font-size: 1.8rem; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Get in Touch</h3>
+                        <div style="display: grid; gap: 1.5rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span style="font-size: 1.5rem;">📞</span>
+                                <div>
+                                    <strong style="color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Phone</strong>
+                                    <p style="margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">+91 98765 43210</p>
+                                    <p style="margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">+91 87654 32109</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span style="font-size: 1.5rem;">✉️</span>
+                                <div>
+                                    <strong style="color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Email</strong>
+                                    <p style="margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">support@farm2fridge.com</p>
+                                    <p style="margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">orders@farm2fridge.com</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span style="font-size: 1.5rem;">📍</span>
+                                <div>
+                                    <strong style="color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Address</strong>
+                                    <p style="margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">123 Dairy Lane, Farm District</p>
+                                    <p style="margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Green Valley, State 560001</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span style="font-size: 1.5rem;">🕒</span>
+                                <div>
+                                    <strong style="color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Business Hours</strong>
+                                    <p style="margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Monday - Saturday: 6:00 AM - 10:00 PM</p>
+                                    <p style="margin: 0; color: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Sunday: 6:00 AM - 8:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="color: white; margin-bottom: 2rem; font-size: 1.8rem; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Send us a Message</h3>
+                        <form onsubmit="handleContactForm(event)" style="display: grid; gap: 1rem;">
+                            <div class="form-group">
+                                <label>Your Name</label>
+                                <input type="text" required placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" required placeholder="Enter your email">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" required placeholder="Enter your phone number">
+                            </div>
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <select required>
+                                    <option value="">Select a subject</option>
+                                    <option value="order">Order Related</option>
+                                    <option value="delivery">Delivery Issue</option>
+                                    <option value="quality">Product Quality</option>
+                                    <option value="billing">Billing Query</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Message</label>
+                                <textarea required placeholder="Write your message here..." rows="4"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Info Section -->
+        <section class="footer-info">
+            <div class="footer-info-container">
+                <div class="footer-info-grid">
+                    <div class="footer-info-card">
+                        <h3>Farm2Fridge</h3>
+                        <p>Fresh, organic produce delivered straight from local farms to your doorstep. Supporting sustainable agriculture and healthy living.</p>
+                        <div class="social-links">
+                            <a href="#" title="Facebook">📘</a>
+                            <a href="#" title="Instagram">📷</a>
+                            <a href="#" title="Twitter">🐦</a>
+                            <a href="#" title="LinkedIn">💼</a>
+                        </div>
+                    </div>
+                    <div class="footer-info-card">
+                        <h3>Quick Links</h3>
+                        <a href="#home" onclick="showHomePage()">Home</a>
+                        <a href="#products" onclick="showProductsPage()">Products</a>
+                        <a href="#about" onclick="showAboutSection()">About Us</a>
+                        <a href="#contact" onclick="showContactSection()">Contact</a>
+                        <a href="#faq">FAQ</a>
+                    </div>
+                    <div class="footer-info-card">
+                        <h3>Services</h3>
+                        <a href="#delivery">Same Day Delivery</a>
+                        <a href="#subscription">Subscription Boxes</a>
+                        <a href="#organic">Organic Certification</a>
+                        <a href="#farmers">Partner Farmers</a>
+                        <a href="#sustainability">Sustainability</a>
+                    </div>
+                    <div class="footer-info-card">
+                        <h3>Contact Info</h3>
+                        <p>📧 info@farm2fridge.com</p>
+                        <p>📞 +1 (555) 123-4567</p>
+                        <p>📍 123 Farm Street, Green Valley, CA 90210</p>
+                        <p>🕒 Mon-Fri: 8AM-8PM, Sat-Sun: 9AM-6PM</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Products Page -->
+    <div id="productsPage" class="page">
+        <!-- Products Header -->
+        <section class="products-header">
+            <h1>Dairy Products</h1>
+            <p>Fresh dairy products sourced directly from local farms. Pure, natural, and delivered fresh to your doorstep.</p>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products-section">
+            <div class="products-container">
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Cart Page -->
+    <div id="cartPage" class="page">
+        <!-- Cart Header -->
+        <section class="products-header">
+            <h1>🛒 Shopping Cart</h1>
+            <p>Review your selected items and proceed to checkout when ready.</p>
+        </section>
+
+        <!-- Cart Summary -->
+        <section class="products-section">
+            <div class="cart-summary show" id="cartSummary">
+                <h3>Your Items</h3>
+                <div id="cartItems">
+                    <p style="color: rgba(255, 255, 255, 0.7);">Your cart is empty</p>
+                </div>
+                <div class="cart-total" id="cartTotal">Total: ₹0.00</div>
+                <button class="checkout-btn" onclick="checkout()">Checkout</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bottom Cart Bar -->
+    <div class="cart-bottom" id="cart-bottom">
+        <div class="cart-info">
+            <span id="bottom-cart-count">0 items</span>
+            <span id="bottom-cart-total">₹0</span>
+        </div>
+        <button class="go-to-cart" onclick="showCartPage()">Go to Cart</button>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Checkout</h3>
+                <button class="close-modal" onclick="closeModal('checkoutModal')">×</button>
+            </div>
+            <form onsubmit="handleCheckout(event)">
+                <div class="form-group">
+                    <label>Delivery Address</label>
+                    <textarea required placeholder="Enter your delivery address" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Date</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Time Slot</label>
+                    <div class="delivery-slots">
+                        <div class="slot-btn active" onclick="selectSlot(this)">6:30 - 8:30 AM</div>
+                        <div class="slot-btn" onclick="selectSlot(this)">7:30 - 9:00 PM</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Subscription Options</label>
+                    <div class="subscription-options">
+                        <div class="subscription-btn active" onclick="selectSubscription(this, 'one-time')">One Time</div>
+                        <div class="subscription-btn" onclick="selectSubscription(this, 'daily')">Daily</div>
+                        <div class="subscription-btn" onclick="selectSubscription(this, 'weekly')">Weekly</div>
+                        <div class="subscription-btn" onclick="selectSubscription(this, 'monthly')">Monthly</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select required onchange="handlePaymentChange(this.value)">
+                        <option value="">Select Payment Method</option>
+                        <option value="upi">UPI</option>
+                        <option value="cod">Cash on Delivery</option>
+                    </select>
+                </div>
+                <div class="form-group" id="upiSection" style="display: none;">
+                    <label>UPI Payment</label>
+                    <div style="text-align: center; padding: 1rem; background: rgba(255, 255, 255, 0.9); border-radius: 10px;">
+                        <p style="margin-bottom: 1rem; color: #2E7D32; font-weight: 600;">Scan QR Code to Pay</p>
+                        <div style="width: 200px; height: 200px; margin: 0 auto; background: white; border: 2px solid #4CAF50; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                            📱
+                        </div>
+                        <p style="margin-top: 1rem; color: #666; font-size: 0.9rem;">UPI ID: farm2fridge@upi</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Special Instructions</label>
+                    <textarea placeholder="Any special delivery instructions" rows="2"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login/Signup Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="authTitle">Login to Continue</h3>
+                <button class="close-modal" onclick="closeModal('loginModal')">×</button>
+            </div>
+            <div id="loginForm">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Email or Phone</label>
+                        <input type="text" required placeholder="Enter email or phone number">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" required placeholder="Enter password">
+                    </div>
+                    <div id="loginError" style="color: #ff0000; font-size: 0.9rem; margin-bottom: 1rem; display: none;"></div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                </form>
+                <p style="text-align: center; margin-top: 1rem; color: #666;">
+                    Don't have an account? 
+                    <a href="#" onclick="showSignupForm()" style="color: #4CAF50; text-decoration: none; font-weight: 600;">Sign Up</a>
+                </p>
+            </div>
+            <div id="signupForm" style="display: none;">
+                <form onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" required placeholder="Enter email address">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" required placeholder="Enter phone number">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" required placeholder="Create password">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" required placeholder="Confirm password">
+                    </div>
+                    <div id="signupError" style="color: #ff0000; font-size: 0.9rem; margin-bottom: 1rem; display: none;"></div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
+                </form>
+                <p style="text-align: center; margin-top: 1rem; color: #666;">
+                    Already have an account? 
+                    <a href="#" onclick="showLoginForm()" style="color: #4CAF50; text-decoration: none; font-weight: 600;">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Confirmation Modal -->
+    <div class="modal" id="orderConfirmationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Order Confirmation</h3>
+                <button class="close-modal" onclick="closeModal('orderConfirmationModal')">×</button>
+            </div>
+            <div id="orderConfirmationContent">
+                <!-- Order details will be populated here -->
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button class="btn" style="background: #dc3545; color: white; flex: 1;" onclick="cancelOrder()">Cancel Order</button>
+                <button class="btn btn-primary" style="flex: 1;" onclick="confirmOrder()">Confirm Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>&copy; 2024 Farm2Fridge. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+
+    <script>
+        // Milk products data
+        const milkProducts = [
+            { id: 1, name: "Buffalo Milk", description: "Fresh buffalo milk - Half Liter", price: 55, image: "images/buffalo-milk.jpg", emoji: "🥛" },
+            { id: 2, name: "Cow Milk", description: "Pure cow milk - Half Liter", price: 60, image: "images/cow-milk.jpg", emoji: "🥛" },
+            { id: 3, name: "Fresh Curd", description: "Homemade fresh curd - 100gm", price: 15, image: "images/curd.jpg", emoji: "🥄" },
+            { id: 4, name: "Pure Ghee", description: "Traditional pure ghee - 250gm", price: 250, image: "images/ghee.jpg", emoji: "🧈" },
+            { id: 5, name: "Fresh Paneer", description: "Soft fresh paneer - 100gm", price: 80, image: "images/paneer.jpg", emoji: "🧀" }
+        ];
+
+        let cart = [];
+
+        // Display products
+        function displayProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            milkProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <span style="font-size: 4rem; display: none;">${product.emoji}</span>
+                    <h3>${product.name}</h3>
+                    <p class="product-description">${product.description}</p>
+                    <div class="product-price">₹${product.price}</div>
+                    <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+                `;
+                grid.appendChild(productCard);
+            });
+        }
+
+        // Add to cart
+        function addToCart(productId) {
+            const product = milkProducts.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartDisplay();
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const bottomCartCount = document.getElementById('bottom-cart-count');
+            const bottomCartTotal = document.getElementById('bottom-cart-total');
+            const bottomCart = document.getElementById('cart-bottom');
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="color: rgba(255, 255, 255, 0.7);">Your cart is empty</p>';
+                cartTotal.textContent = 'Total: ₹0.00';
+                bottomCartCount.textContent = '0 items';
+                bottomCartTotal.textContent = '₹0';
+                bottomCart.classList.remove('show');
+                return;
+            }
+
+            cartItems.innerHTML = '';
+            let total = 0;
+            let totalItems = 0;
+
+            cart.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `${item.emoji} ${item.name} x${item.quantity} - ₹${(item.price * item.quantity).toFixed(2)}`;
+                cartItems.appendChild(itemDiv);
+                total += item.price * item.quantity;
+                totalItems += item.quantity;
+            });
+
+            cartTotal.textContent = `Total: ₹${total.toFixed(2)}`;
+            bottomCartCount.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''}`;
+            bottomCartTotal.textContent = `₹${total.toFixed(2)}`;
+            bottomCart.classList.add('show');
+        }
+
+        // User authentication state
+        let isLoggedIn = false;
+        let currentUser = null;
+        let registeredUsers = JSON.parse(localStorage.getItem('farm2fridge_users') || '[]');
+
+        // Checkout function
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            // Check if user is logged in
+            if (!isLoggedIn) {
+                document.getElementById('loginModal').classList.add('show');
+                return;
+            }
+
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelector('input[type="date"]').setAttribute('min', today);
+            
+            // Show checkout modal
+            document.getElementById('checkoutModal').classList.add('show');
+        }
+
+        // Modal functions
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        function selectSlot(element) {
+            document.querySelectorAll('.slot-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function selectSubscription(element, type) {
+            document.querySelectorAll('.subscription-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function handleCheckout(event) {
+            event.preventDefault();
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const selectedSlot = document.querySelector('.slot-btn.active').textContent;
+            const selectedSubscription = document.querySelector('.subscription-btn.active').textContent;
+            const paymentMethod = event.target.querySelector('select').value;
+            const address = event.target.querySelector('textarea').value;
+            const deliveryDate = event.target.querySelector('input[type="date"]').value;
+            
+            // Store order details for confirmation
+            const orderDetails = {
+                items: [...cart],
+                total: total,
+                slot: selectedSlot,
+                subscription: selectedSubscription,
+                payment: paymentMethod,
+                address: address,
+                date: deliveryDate
+            };
+            
+            // Close checkout modal
+            closeModal('checkoutModal');
+            
+            // Show order confirmation modal
+            showOrderConfirmation(orderDetails);
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Authentication functions
+        function showLoginModal() {
+            if (isLoggedIn) {
+                showUserProfile();
+            } else {
+                document.getElementById('loginModal').classList.add('show');
+                showLoginForm();
+            }
+        }
+
+        function showUserProfile() {
+            if (isLoggedIn && currentUser) {
+                alert(`Welcome ${currentUser.name}!\n\nEmail: ${currentUser.email}\nPhone: ${currentUser.phone}\n\nClick OK to logout.`);
+                logout();
+            }
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            currentUser = null;
+            updateNavigation();
+            showNotification('Logged out successfully!');
+        }
+
+        function updateNavigation() {
+            const loginBtn = document.getElementById('loginNavBtn');
+            const userBtn = document.getElementById('userNavBtn');
+            
+            if (isLoggedIn && currentUser) {
+                loginBtn.style.display = 'none';
+                userBtn.style.display = 'block';
+                userBtn.textContent = `Welcome, ${currentUser.name}`;
+            } else {
+                loginBtn.style.display = 'block';
+                userBtn.style.display = 'none';
+            }
+        }
+
+        function showLoginForm() {
+            document.getElementById('authTitle').textContent = 'Login to Continue';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('signupForm').style.display = 'none';
+            // Clear errors
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('signupError').style.display = 'none';
+        }
+
+        function showSignupForm() {
+            document.getElementById('authTitle').textContent = 'Create Account';
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+            // Clear errors
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('signupError').style.display = 'none';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="text"]').value;
+            const password = event.target.querySelector('input[type="password"]').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            // Find user in registered users
+            const user = registeredUsers.find(u => 
+                (u.email === email || u.phone === email) && u.password === password
+            );
+            
+            if (user) {
+                isLoggedIn = true;
+                currentUser = user;
+                updateNavigation();
+                closeModal('loginModal');
+                showNotification(`Login successful! Welcome back, ${user.name}!`);
+                errorDiv.style.display = 'none';
+                
+                // Clear form
+                event.target.reset();
+                
+                // Now proceed to checkout
+                setTimeout(() => {
+                    checkout();
+                }, 1000);
+            } else {
+                errorDiv.textContent = 'Invalid email/phone or password. Please try again.';
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            const name = event.target.querySelector('input[type="text"]').value;
+            const email = event.target.querySelector('input[type="email"]').value;
+            const phone = event.target.querySelector('input[type="tel"]').value;
+            const password = event.target.querySelectorAll('input[type="password"]')[0].value;
+            const confirmPassword = event.target.querySelectorAll('input[type="password"]')[1].value;
+            const errorDiv = document.getElementById('signupError');
+            
+            // Clear previous errors
+            errorDiv.style.display = 'none';
+            
+            if (password !== confirmPassword) {
+                errorDiv.textContent = 'Passwords do not match!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Check if user already exists
+            const existingUser = registeredUsers.find(u => u.email === email || u.phone === phone);
+            if (existingUser) {
+                errorDiv.textContent = 'User with this email or phone already exists!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Create new user
+            const newUser = { name, email, phone, password };
+            registeredUsers.push(newUser);
+            
+            // Save to localStorage
+            localStorage.setItem('farm2fridge_users', JSON.stringify(registeredUsers));
+            
+            // Log in the user
+            isLoggedIn = true;
+            currentUser = newUser;
+            updateNavigation();
+            closeModal('loginModal');
+            showNotification(`Account created successfully! Welcome to Farm2Fridge, ${name}!`);
+            
+            // Clear form
+            event.target.reset();
+            
+            // Now proceed to checkout
+            setTimeout(() => {
+                checkout();
+            }, 1000);
+        }
+
+        // Payment method handler
+        function handlePaymentChange(paymentMethod) {
+            const upiSection = document.getElementById('upiSection');
+            if (paymentMethod === 'upi') {
+                upiSection.style.display = 'block';
+            } else {
+                upiSection.style.display = 'none';
+            }
+        }
+
+        // Page navigation
+        function showHomePage() {
+            document.getElementById('homePage').classList.add('active');
+            document.getElementById('productsPage').classList.remove('active');
+            document.getElementById('cartPage').classList.remove('active');
+            
+            // Update nav
+            document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+            document.querySelector('a[href="#home"]').classList.add('active');
+        }
+
+        function showProductsPage() {
+            document.getElementById('homePage').classList.remove('active');
+            document.getElementById('productsPage').classList.add('active');
+            document.getElementById('cartPage').classList.remove('active');
+            
+            // Update nav
+            document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+            document.querySelector('a[href="#products"]').classList.add('active');
+            
+            // Display products
+            displayProducts();
+        }
+
+        function showCartPage() {
+            document.getElementById('homePage').classList.remove('active');
+            document.getElementById('productsPage').classList.remove('active');
+            document.getElementById('cartPage').classList.add('active');
+            
+            // Update nav
+            document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+            document.querySelector('a[href="#cart"]').classList.add('active');
+        }
+
+        function showAboutSection() {
+            // Scroll to about section on home page
+            showHomePage();
+            setTimeout(() => {
+                document.getElementById('about').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+            
+            // Update nav
+            document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+            document.querySelector('a[href="#about"]').classList.add('active');
+        }
+
+        function showContactSection() {
+            // Scroll to contact section on home page
+            showHomePage();
+            setTimeout(() => {
+                document.getElementById('contact').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+            
+            // Update nav
+            document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+            document.querySelector('a[href="#contact"]').classList.add('active');
+        }
+
+        // Store current order for confirmation
+        let currentOrder = null;
+
+        function showOrderConfirmation(orderDetails) {
+            currentOrder = orderDetails;
+            const content = document.getElementById('orderConfirmationContent');
+            
+            let itemsList = '';
+            orderDetails.items.forEach(item => {
+                itemsList += `<div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>${item.emoji} ${item.name} x${item.quantity}</span>
+                    <span>₹${(item.price * item.quantity).toFixed(2)}</span>
+                </div>`;
+            });
+            
+            const paymentStatus = orderDetails.payment === 'upi' ? 
+                '<div style="color: #ff9800; font-weight: bold; margin-top: 1rem;">⚠️ Please complete UPI payment before confirming</div>' : 
+                '<div style="color: #4CAF50; font-weight: bold; margin-top: 1rem;">✅ Cash on Delivery selected</div>';
+            
+            content.innerHTML = `
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
+                    <h4 style="color: #2E7D32; margin-bottom: 1rem;">Order Summary</h4>
+                    ${itemsList}
+                    <hr style="border: 1px solid rgba(76, 175, 80, 0.3); margin: 1rem 0;">
+                    <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem;">
+                        <span>Total:</span>
+                        <span style="color: #4CAF50;">₹${orderDetails.total.toFixed(2)}</span>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 10px;">
+                    <h4 style="color: #2E7D32; margin-bottom: 1rem;">Delivery Details</h4>
+                    <p><strong>Address:</strong> ${orderDetails.address}</p>
+                    <p><strong>Date:</strong> ${orderDetails.date}</p>
+                    <p><strong>Time Slot:</strong> ${orderDetails.slot}</p>
+                    <p><strong>Subscription:</strong> ${orderDetails.subscription}</p>
+                    <p><strong>Payment Method:</strong> ${orderDetails.payment === 'upi' ? 'UPI Payment' : 'Cash on Delivery'}</p>
+                    ${paymentStatus}
+                </div>
+            `;
+            
+            document.getElementById('orderConfirmationModal').classList.add('show');
+        }
+
+        function confirmOrder() {
+            if (!currentOrder) return;
+            
+            // Check if UPI payment is selected but not completed
+            if (currentOrder.payment === 'upi') {
+                const paymentConfirmed = confirm('Have you completed the UPI payment?\n\nClick OK if payment is done, or Cancel to go back and complete payment.');
+                if (!paymentConfirmed) {
+                    return; // Don't proceed with order
+                }
+            }
+            
+            // Close confirmation modal
+            closeModal('orderConfirmationModal');
+            
+            // Generate order ID
+            const orderId = 'F2F' + Date.now().toString().slice(-6);
+            
+            // Show success notification
+            const paymentText = currentOrder.payment === 'upi' ? 'UPI Payment Confirmed' : 'Cash on Delivery';
+            showNotification(`Order confirmed successfully! 🎉\nOrder ID: ${orderId}\nTotal: ₹${currentOrder.total.toFixed(2)}\nPayment: ${paymentText}\nDelivery: ${currentOrder.slot} on ${currentOrder.date}`);
+            
+            // Clear cart and reset
+            cart = [];
+            updateCartDisplay();
+            currentOrder = null;
+        }
+
+        function cancelOrder() {
+            closeModal('orderConfirmationModal');
+            currentOrder = null;
+            showNotification('Order cancelled. You can modify your order and try again.');
+        }
+
+        function handleContactForm(event) {
+            event.preventDefault();
+            const name = event.target.querySelector('input[type="text"]').value;
+            const subject = event.target.querySelector('select').value;
+            
+            showNotification(`Thank you ${name}! Your message has been sent successfully. We'll get back to you within 24 hours.`);
+            event.target.reset();
+        }
+
+        // Function to change background image
+        function changeBackgroundImage(imageUrl) {
+            const backgroundContainer = document.getElementById('backgroundContainer');
+            backgroundContainer.style.backgroundImage = `url('${imageUrl}')`;
+        }
+
+        // Function to change logo
+        function changeLogo(logoUrl) {
+            const logoContent = document.getElementById('logoContent');
+            if (logoUrl) {
+                logoContent.innerHTML = `<img src="${logoUrl}" alt="Farm2Fridge Logo">`;
+            } else {
+                logoContent.innerHTML = '🌱'; // Default emoji logo
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97e9cd6982773a3c',t:'MTc1Nzc4OTEzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
